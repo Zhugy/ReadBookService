@@ -2,10 +2,6 @@
 # -*- coding:utf-8 -*-
 import requests, os, re
 from bs4 import BeautifulSoup
-import lxml
-from uuid import uuid1
-from random import choice
-import json
 
 def loadHotList():
     req = requests.get('http://www.shuquge.com/top.html')

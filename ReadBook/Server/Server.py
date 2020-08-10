@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from Home.Home import loadHotList
+
 from flask import Flask, request
 
 app = Flask(__name__)
@@ -12,4 +13,4 @@ def hot():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.102',port=9266, debug=True)
+    app.run(host='10.24.48.100',port=9266, debug=True)
