@@ -8,14 +8,16 @@ from bs4 import BeautifulSoup
 def getBookHomeInfo(bookCode):
     # 网络请求
 
-    # bookFile = 'http://www.shuquge.com/txt/{}/index.html'.format(str(bookCode))
-    # req = requests.get("http://www.shuquge.com/txt/5809/index.html")
-    # chart_soup = BeautifulSoup(req.text, 'lxml')
+    bookFile = 'http://www.shuquge.com/txt/{}/index.html'.format(str(bookCode))
+    req = requests.get("http://www.shuquge.com/txt/5809/index.html")
+    req.encoding = 'utf-8'
+    chart_soup = BeautifulSoup(req.text, 'lxml')
     # 加载本地数据
-    localFile = '/Users/zhugy781/zhugyProject/PythonProject/ReadBookService/ReadBook/localHtml/bookHome.html'
-    #
-    with open(localFile, 'r', encoding="utf-8") as f:
-        chart_soup = BeautifulSoup(f.read(), 'lxml')
+    # # localFile = '/Users/zhugy781/zhugyProject/PythonProject/ReadBookService/ReadBook/localHtml/bookHome.html'
+    # #
+    # localFile = "/Users/zhugy781/zhugyProject/ReadBookService/ReadBook/localHtml/bookHome.html"
+    # with open(localFile, 'r', encoding="utf-8") as f:
+    #     chart_soup = BeautifulSoup(f.read(), 'lxml')
 
     jsonData = {}
 
@@ -76,7 +78,7 @@ def analysisBookHead(jsonData, div):
     # 查找intro
     introInfo = div.find('div', class_='intro')
     introDict = {}
-    introDict['headName'] = introInfo.find('span').string
+    introDict['headName'] = introInfo.get_text()
     # TODO:  暂未找到取值的最优解决方案
     """
         <div class="intro">
@@ -90,8 +92,8 @@ def analysisBookHead(jsonData, div):
             推荐地址：http://www.shuquge.com/txt/5809/index.html
         </div>
     """
-    htmlStr = str(introInfo)
-    print('如下html 还没有解析--------->\n😢😢😢😢😢😢\n{} \n😢😢😢😢😢😢😢😢'.format(str(htmlStr)))
+    # htmlStr = str(introInfo)
+    # print('如下html 还没有解析--------->\n😢😢😢😢😢😢\n{} \n😢😢😢😢😢😢😢😢'.format(str(htmlStr)))
     bookInfo['intro'] = introDict
 
     # link 数据解析
