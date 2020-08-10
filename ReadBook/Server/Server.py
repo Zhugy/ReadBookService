@@ -8,6 +8,11 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+
+@app.route('/', methods=['GET'])
+def hello():
+    return {"data":"hello word"}
+
 @app.route('/readbook/hot',methods=['GET'])
 def hot():
     return loadHotList()
@@ -18,4 +23,8 @@ def bookintroduce(bookCode):
 
 
 if __name__ == '__main__':
-    app.run(host='10.24.48.100',port=9266, debug=True)
+    isHome = True
+    if isHome:
+        app.run(host='192.168.0.103', port=9266, debug=True)
+    else:
+        app.run(host='10.24.48.100', port=9266, debug=True)
