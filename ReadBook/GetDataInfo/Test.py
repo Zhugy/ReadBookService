@@ -33,7 +33,7 @@ import requests
 # 提取信息
 from lxml import etree
 
-filePath = r"/Users/zhugy781/zhugyProject/ReadBookService/ReadBook/book/"
+filePath = r"/Users/zhugy781/zhugyProject/PythonProject/ReadBookService/ReadBook/Book"
 
 
 def download_text(url):
@@ -64,6 +64,7 @@ def get_link(index_url):
     link_list = []  # 打包所有的练接
     for item in dd:
         href = "http://www.shuquge.com/txt/514/" + item.xpath('./a/@href')[0]
+        print(href)
         link_list.append(href)
     return link_list  # 返回的东西，我要带走的
 
