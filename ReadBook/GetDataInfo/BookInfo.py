@@ -7,27 +7,20 @@ from bs4 import BeautifulSoup
 
 def getBookHomeInfo(bookCode):
     # 网络请求
-
     bookFile = 'http://www.shuquge.com/txt/{}/index.html'.format(str(bookCode))
-    req = requests.get("http://www.shuquge.com/txt/5809/index.html")
+    req = requests.get(bookFile)
     req.encoding = 'utf-8'
     chart_soup = BeautifulSoup(req.text, 'lxml')
-    # 加载本地数据
-    # # localFile = '/Users/zhugy781/zhugyProject/PythonProject/ReadBookService/ReadBook/localHtml/bookHome.html'
-    # #
-    # localFile = "/Users/zhugy781/zhugyProject/ReadBookService/ReadBook/localHtml/bookHome.html"
-    # with open(localFile, 'r', encoding="utf-8") as f:
-    #     chart_soup = BeautifulSoup(f.read(), 'lxml')
 
     jsonData = {}
 
     # 解析小说基本信息
     div = chart_soup.find_all('div', class_='info')[0]
-    bookInfo = analysisBookHead(jsonData, div)
+    bookInfo = analysisBookHead(div)
 
     # 解析小说 章节
     catalogMap = chart_soup.find_all('div', class_='listmain')[0]
-    listMain = analysisCatalog(jsonData, catalogMap)
+    listMain = analysisCatalog(catalogMap)
 
     jsonData['data'] = {'bookInfo': bookInfo, "listmain": listMain}
 
@@ -44,7 +37,7 @@ def getBookHomeInfo(bookCode):
 """
 
 
-def analysisBookHead(jsonData, div):
+def analysisBookHead(div):
     bookInfo = {}
 
     # 查找封面图
@@ -79,21 +72,6 @@ def analysisBookHead(jsonData, div):
     introInfo = div.find('div', class_='intro')
     introDict = {}
     introDict['headName'] = introInfo.get_text()
-    # TODO:  暂未找到取值的最优解决方案
-    """
-        <div class="intro">
-            <span>
-                简介：
-            </span>
-            吾有一口玄黄气，可吞天地日月星。天蚕土豆最新鼎力大作，2017年度必看玄幻小说。
-            <br/>
-                作者：天蚕土豆所写的《元尊》无弹窗免费全文阅读为转载作品,章节由网友发布。
-            <br/>
-            推荐地址：http://www.shuquge.com/txt/5809/index.html
-        </div>
-    """
-    # htmlStr = str(introInfo)
-    # print('如下html 还没有解析--------->\n😢😢😢😢😢😢\n{} \n😢😢😢😢😢😢😢😢'.format(str(htmlStr)))
     bookInfo['intro'] = introDict
 
     # link 数据解析
@@ -110,7 +88,7 @@ def analysisBookHead(jsonData, div):
 
 
 # 解析章节
-def analysisCatalog(jsonData, divMap):
+def analysisCatalog(divMap):
     listMain = []
     itemDict = {}
     itemList = []

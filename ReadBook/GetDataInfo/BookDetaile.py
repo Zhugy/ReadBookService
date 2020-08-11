@@ -5,7 +5,6 @@ import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 import os
-from lxml import etree
 
 class BookDetaile():
     '''
@@ -17,9 +16,13 @@ class BookDetaile():
         self.chapterCode = chapterCode
 
     def requestChapter(self):
-        localFile = r'/Users/zhugy781/zhugyProject/PythonProject/ReadBookService/ReadBook/localHtml/detail.htm'
-        with open(localFile,'r',encoding='utf-8') as f:
-            chart_soup = BeautifulSoup(f.read(), 'lxml')
+        useragentPath = os.path.dirname(os.getcwd()) + '/UserAgent/fake_useragent.json'
+        ua = UserAgent(path=useragentPath)
+        heads = {'User-Agent': ua.random}
+        reqFile = 'http://www.shuquge.com/txt/{}/{}.html'.format(str(self.bookCode), str(self.chapterCode))
+        reqData = requests.get(reqFile, headers = heads)
+        reqData.encoding = 'utf-8'
+        chart_soup = BeautifulSoup(reqData.text, 'lxml')
 
         jsonData = {}
         contentDict = {}
@@ -33,22 +36,7 @@ class BookDetaile():
         return jsonData
 
 
-    def texRequest(self):
-        useragentPath = os.path.dirname(os.getcwd()) + '/UserAgent/fake_useragent.json'
-        ua = UserAgent(path=useragentPath)
-
-        heads = {'User-Agent': ua.random}
-        reqFile = 'http://www.shuquge.com/txt/{}/{}'.format(str(self.bookCode), str(self.chapterCode))
-        # reqData = requests.get(reqFile, headers = heads)
-        reqData = requests.get(reqFile)
-        reqData.encoding = 'utf-8'
-        # sub_soup = BeautifulSoup(reqData.text, 'lxml')
-        print(reqData.headers)
-        print(reqData.text)
-
-
 
 if __name__ == "__main__":
-    book = BookDetaile("5809",'32857490.html')
-    # book.requestChapter()
-    book.texRequest()
+    book = BookDetaile("5809",'32857490')
+    book.requestChapter()

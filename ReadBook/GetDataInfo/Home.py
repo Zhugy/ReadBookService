@@ -26,7 +26,6 @@ def loadHotList():
 
     jsonData["data"] = {"hotArr": countArr}
 
-    # print(json.dumps(jsonData,ensure_ascii=False))
     return jsonData
 
 if __name__ == "__main__":
