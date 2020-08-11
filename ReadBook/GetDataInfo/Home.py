@@ -17,7 +17,8 @@ def loadHotList():
             disDir = {}
             disDir["typename"] = subHt('span')[0].string
             disDir["name"] = subHt('a')[0].string
-            disDir["url"] = subHt.find('a')['href']
+            bookCode = subHt.find('a')['href'].split('/')[-2]
+            disDir["bookCode"] = bookCode
             content.append(disDir)
 
         subDic["content"] = content

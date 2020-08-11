@@ -17,6 +17,7 @@ def getBookHomeInfo(bookCode):
     # 解析小说基本信息
     div = chart_soup.find_all('div', class_='info')[0]
     bookInfo = analysisBookHead(div)
+    bookInfo['bookCode'] = bookCode
 
     # 解析小说 章节
     catalogMap = chart_soup.find_all('div', class_='listmain')[0]
@@ -61,10 +62,12 @@ def analysisBookHead(div):
         elif index == 4:
             smallDict['lastUpdateDate'] = smallSpanArr[index].get_text()
         elif index == 5:
+            key = smallSpanArr[index].contents[1]['href'].split('/')[-1].split('.')[0]
+
             smallDict['lastUpdateInfo'] = {
                 "title": smallSpanArr[index].get_text(),
                 "defaultName": smallSpanArr[index].contents[0],
-                "key": smallSpanArr[index].contents[1]['href']
+                "chapterCode": key
             }
     bookInfo['small'] = smallDict
 
@@ -74,6 +77,7 @@ def analysisBookHead(div):
     introDict['headName'] = introInfo.get_text()
     bookInfo['intro'] = introDict
 
+    '''
     # link 数据解析
     linkMap = div.find('div', class_='link')
     linkDict = {}
@@ -83,7 +87,7 @@ def analysisBookHead(div):
         linkSubArr.append({"name": href.get_text(), "key": href['href']})
     linkDict['linkArr'] = linkSubArr
     bookInfo['link'] = linkDict
-
+    '''
     return bookInfo
 
 
@@ -112,7 +116,8 @@ def analysisCatalog(divMap):
         # 每一章节
         if div.name == 'dd':
             aTag = div.find('a')
-            itemList.append({"title": aTag.string, "keyValue":aTag['href']})
+            keyValue = aTag['href'].split('.')[0]
+            itemList.append({"title": aTag.string, "keyValue": keyValue})
 
     # 结束的时候重新赋值
     if len(itemDict.values()) > 0:
