@@ -3,6 +3,8 @@
 
 import requests
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
+import os
 from lxml import etree
 
 class BookDetaile():
@@ -32,11 +34,17 @@ class BookDetaile():
 
 
     def texRequest(self):
+        useragentPath = os.path.dirname(os.getcwd()) + '/UserAgent/fake_useragent.json'
+        ua = UserAgent(path=useragentPath)
+
+        heads = {'User-Agent': ua.random}
         reqFile = 'http://www.shuquge.com/txt/{}/{}'.format(str(self.bookCode), str(self.chapterCode))
+        # reqData = requests.get(reqFile, headers = heads)
         reqData = requests.get(reqFile)
-        reqData.encoding = reqData.apparent_encoding
-        sub_soup = BeautifulSoup(reqData.text, 'lxml')
-        print(sub_soup)
+        reqData.encoding = 'utf-8'
+        # sub_soup = BeautifulSoup(reqData.text, 'lxml')
+        print(reqData.headers)
+        print(reqData.text)
 
 
 
