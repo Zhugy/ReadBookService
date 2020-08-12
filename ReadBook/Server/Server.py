@@ -31,6 +31,7 @@ def bookDetaile(bookCode, textCode):
     bookDet = BookDetaile(bookCode, textCode)
     return bookDet.requestChapter()
 
+# 搜索
 @app.route('/readbook/searchbook/<string:bookName>', methods=["GET"])
 def searchBook(bookName):
     search = BookSearch()

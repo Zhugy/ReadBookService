@@ -8,8 +8,9 @@ from GetDataInfo.DB import ReadBookDB
 
 def getBookHomeInfo(bookCode):
     db = ReadBookDB()
-    if db.getBookInfo(bookCode) != None:
-        return db.getBookInfo(bookCode)
+    data = db.getBookInfo(bookCode)
+    if data != None:
+        return data
 
     # 网络请求
     bookFile = "http://www.shuquge.com/txt/{}/index.html".format(str(bookCode))

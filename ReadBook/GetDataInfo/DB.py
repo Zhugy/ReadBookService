@@ -12,21 +12,29 @@ class ReadBookDB(object):
 
     def setData(self,bookCode,bookInfo):
         pipe = self.rd.pipeline()
-        pipe.set(str(bookCode), str(bookInfo))
+        pipe.set(str(bookCode), json.dumps(bookInfo))
+        # 12小时过期
+        pipe.expire(str(bookCode), 60*60*12)
         pipe.execute()
 
     def getBookInfo(self,bookCode):
-        str = self.rd.get(bookCode)
-        jsonStr = json.loads(str,encoding='utf-8')
-        return jsonStr
+        val = self.rd.get(str(bookCode))
+        if type(val) == str:
+            if len(val) == 0:
+                return None
+            p = json.loads(val)
+            return p
+        return None
+
 
 
 if __name__ == "__main__":
-    # rd = ReadBookDB()
-    # rd.setData("pp", '898988665556')
-    # print(rd.getBookInfo('pp'))
+    rd = ReadBookDB()
+    # rd.setData("119292", '898988665556')
+    print(rd.getBookInfo("119292"))
 
-    pool = redis.ConnectionPool(host='127.0.0.1', port=6379, decode_responses=True)
-    r = redis.Redis(host='127.0.0.1', port=6379, decode_responses=True)
-    # r.set('name', 'runoob')  # 设置 name 对应的值
-    print(r.get('p'))  # 取出键 name 对应的值
+
+    # pool = redis.ConnectionPool(host='127.0.0.1', port=6379, decode_responses=True)
+    # r = redis.Redis(host='127.0.0.1', port=6379, decode_responses=True)
+    # # r.set('name', 'runoob')  # 设置 name 对应的值
+    # print(r.get('119292'))  # 取出键 name 对应的值
