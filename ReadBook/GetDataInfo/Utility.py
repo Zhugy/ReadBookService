@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import os
+from fake_useragent import UserAgent
 
 # 获取资源文件 目录
 def localHtmlPath(fileName):
@@ -10,7 +11,12 @@ def localHtmlPath(fileName):
         return file
     return file + '/{}'.format(str(fileName))
 
-
+# UserAgent
+def user_egentDict():
+    useragentPath = os.path.dirname(os.getcwd()) + '/UserAgent/fake_useragent.json'
+    ua = UserAgent(path=useragentPath)
+    headers = {'User-Agent': ua.random}
+    return headers
 
 
 

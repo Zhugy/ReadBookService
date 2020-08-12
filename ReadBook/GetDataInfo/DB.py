@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # rd.setData("pp", '898988665556')
     # print(rd.getBookInfo('pp'))
 
-    # pool = redis.ConnectionPool(host='127.0.0.1', port=6379, decode_responses=True)
-    # r = redis.Redis(host='127.0.0.1', port=6379, decode_responses=True)
-    # # r.set('name', 'runoob')  # 设置 name 对应的值
-    # print(r.get('p'))  # 取出键 name 对应的值
+    pool = redis.ConnectionPool(host='127.0.0.1', port=6379, decode_responses=True)
+    r = redis.Redis(host='127.0.0.1', port=6379, decode_responses=True)
+    # r.set('name', 'runoob')  # 设置 name 对应的值
+    print(r.get('p'))  # 取出键 name 对应的值

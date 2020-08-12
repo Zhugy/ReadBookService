@@ -4,6 +4,7 @@
 from GetDataInfo.Home import loadHotList
 from GetDataInfo.BookInfo import getBookHomeInfo
 from GetDataInfo.BookDetaile import BookDetaile
+from GetDataInfo.SearchBook import BookSearch
 
 from flask import Flask, request
 
@@ -30,6 +31,10 @@ def bookDetaile(bookCode, textCode):
     bookDet = BookDetaile(bookCode, textCode)
     return bookDet.requestChapter()
 
+@app.route('/readbook/searchbook/<string:bookName>', methods=["GET"])
+def searchBook(bookName):
+    search = BookSearch()
+    return search.search(bookName)
 
 if __name__ == '__main__':
     isHome = True
