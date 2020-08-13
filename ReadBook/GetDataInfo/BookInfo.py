@@ -4,6 +4,7 @@
 import requests, json, re
 from bs4 import BeautifulSoup
 from GetDataInfo.DB import ReadBookDB
+from GetDataInfo.Utility import AllData, localHtmlPath
 
 
 def getBookHomeInfo(bookCode):
@@ -12,11 +13,15 @@ def getBookHomeInfo(bookCode):
     if data != None:
         return data
 
-    # 网络请求
-    bookFile = "http://www.shuquge.com/txt/{}/index.html".format(str(bookCode))
-    req = requests.get(bookFile)
-    req.encoding = "utf-8"
-    chart_soup = BeautifulSoup(req.text, "lxml")
+    if AllData().isLoadLocalData():# 加载本地数据
+        fileName = localHtmlPath('boolHome.html')
+        with open(fileName, 'r', encoding='utf-8') as f:
+            chart_soup = BeautifulSoup(f.read(), 'lxml')
+    else:
+        bookFile = "http://www.shuquge.com/txt/{}/index.html".format(str(bookCode))
+        req = requests.get(bookFile)
+        req.encoding = "utf-8"
+        chart_soup = BeautifulSoup(req.text,'lxml')
 
     jsonData = {}
 

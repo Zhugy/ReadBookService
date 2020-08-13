@@ -2,10 +2,18 @@
 # -*- coding:utf-8 -*-
 import requests, os, re
 from bs4 import BeautifulSoup
+from GetDataInfo.Utility import localHtmlPath
+from GetDataInfo.Utility import AllData
 
 def loadHotList():
-    req = requests.get('http://www.shuquge.com/top.html')
-    chart_soup = BeautifulSoup(req.text,'lxml')
+    if AllData().isLoadLocalData():# 加载本地数据
+        fileName = localHtmlPath('hotlist.html')
+        with open(fileName, 'r', encoding='utf-8') as f:
+            chart_soup = BeautifulSoup(f.read(), 'lxml')
+    else:
+        req = requests.get('http://www.shuquge.com/top.html')
+        chart_soup = BeautifulSoup(req.text,'lxml')
+
     hotList = chart_soup.body.find_all('div',class_='block bd')
     jsonData = {}
     countArr = []

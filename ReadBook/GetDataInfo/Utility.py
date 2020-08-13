@@ -19,6 +19,11 @@ def user_egentDict():
     return headers
 
 
+class AllData(object):
+
+    @staticmethod
+    def isLoadLocalData():
+        return True
 
 
 

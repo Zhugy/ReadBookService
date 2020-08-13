@@ -5,6 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 import os
+from GetDataInfo.Utility import AllData, localHtmlPath
 
 class BookDetaile():
     '''
@@ -19,10 +20,16 @@ class BookDetaile():
         useragentPath = os.path.dirname(os.getcwd()) + '/UserAgent/fake_useragent.json'
         ua = UserAgent(path=useragentPath)
         heads = {'User-Agent': ua.random}
-        reqFile = 'http://www.shuquge.com/txt/{}/{}.html'.format(str(self.bookCode), str(self.chapterCode))
-        reqData = requests.get(reqFile, headers = heads)
-        reqData.encoding = 'utf-8'
-        chart_soup = BeautifulSoup(reqData.text, 'lxml')
+
+        if AllData().isLoadLocalData():  # 加载本地数据
+            fileName = localHtmlPath('detail.html')
+            with open(fileName, 'r', encoding='utf-8') as f:
+                chart_soup = BeautifulSoup(f.read(), 'lxml')
+        else:
+            reqFile = 'http://www.shuquge.com/txt/{}/{}.html'.format(str(self.bookCode), str(self.chapterCode))
+            reqData = requests.get(reqFile, headers = heads)
+            reqData.encoding = 'utf-8'
+            chart_soup = BeautifulSoup(reqData.text, 'lxml')
 
         jsonData = {}
         contentDict = {}
