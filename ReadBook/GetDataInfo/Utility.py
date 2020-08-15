@@ -23,7 +23,7 @@ class AllData(object):
 
     @staticmethod
     def isLoadLocalData():
-        return True
+        return False
 
 
 

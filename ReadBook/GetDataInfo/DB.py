@@ -11,6 +11,8 @@ class ReadBookDB(object):
 
 
     def setData(self,bookCode,bookInfo):
+        if type(bookInfo) != dict:
+            return
         pipe = self.rd.pipeline()
         pipe.set(str(bookCode), json.dumps(bookInfo))
         # 12小时过期
